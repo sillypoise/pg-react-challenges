@@ -5,10 +5,13 @@ import { Item } from "./types";
 function TaskList({
     items,
     handleDelete,
+    handleToggle,
 }: {
     items: Array<Item>;
     handleDelete: (id: Item["id"]) => void;
+    handleToggle: (id: Item["id"]) => void;
 }) {
+    let toggleStyles = "line-through";
     if (!items.length) {
         return <p>Seems like you're done with your tasks! ✌️</p>;
     }
@@ -16,7 +19,16 @@ function TaskList({
         <ul role="list" className="stack">
             {items.map((item) => (
                 <li key={item.id} className="cluster gap-s">
-                    <span>{item.text}</span>
+                    <span
+                        onClick={() => handleToggle(item.id)}
+                        className={
+                            `cursor-pointer select-none` +
+                            " " +
+                            `${item.completed ? "line-through" : ""}`
+                        }
+                    >
+                        {item.text}
+                    </span>
                     <button onClick={() => handleDelete(item.id)}>❌</button>
                 </li>
             ))}
@@ -40,6 +52,13 @@ function App() {
         setItems(filteredItems);
     }
 
+    function handleToggle(id: Item["id"]) {
+        let newItems = items.map((item) =>
+            item.id === id ? { ...item, completed: !item.completed } : item
+        );
+        setItems(newItems);
+    }
+
     return (
         <main className="mlb-l">
             <article className="center stack">
@@ -48,7 +67,11 @@ function App() {
                 {isLoading ? (
                     <p>Loading your data...</p>
                 ) : (
-                    <TaskList items={items} handleDelete={handleDelete} />
+                    <TaskList
+                        items={items}
+                        handleDelete={handleDelete}
+                        handleToggle={handleToggle}
+                    />
                 )}
             </article>
         </main>
