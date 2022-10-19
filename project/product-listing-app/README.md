@@ -8,7 +8,7 @@
 -   [x] Can you localize prices to your country's currency
 -   [x] Add a select to sort results alphabetically or by price
 -   [x] Search query and sorting should be persisted on app reload
--   [ ] Recommended products should be random and should not change when search query changes
+-   [x] Recommended products should be random and should not change when search query changes
 -   [ ] Make search doesn't re-render too frequently
 -   [ ] Add ability to add and remove products from favourites. Favourited products should have a `fav` class
 -   [ ] Favourites should be persisted when we reload the page

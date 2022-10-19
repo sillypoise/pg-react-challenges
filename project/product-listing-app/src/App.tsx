@@ -1,15 +1,59 @@
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, memo, useEffect, useMemo, useState } from "react";
 import { api } from "./api";
 import { Product } from "./types";
 import { z } from "zod";
 
+enum SortOption {
+    PRICE = "price",
+    NAME = "name",
+    NONE = "",
+}
+
+function RecommendedProductList() {
+    let [recommendedProducts, setRecommendedProducts] = useState<
+        Array<Product>
+    >([]);
+
+    useEffect(() => {
+        api.search().then((data) => setRecommendedProducts(data));
+    }, []);
+    return (
+        <ul
+            role="list"
+            className="center [--center-width:theme(contentWidth.3)] auto-grid"
+        >
+            {[...recommendedProducts]
+                .sort(() => (Math.random() > 0.5 ? 1 : -1))
+                .slice(0, 2)
+                .map((product) => (
+                    <li
+                        key={product.id}
+                        className={
+                            `box p-xs` +
+                            " " +
+                            `${
+                                product.price <= 100
+                                    ? "border-light-green-9 border-4"
+                                    : ""
+                            }`
+                        }
+                    >
+                        <h4>{product.title}</h4>
+                        <p>{product.description}</p>
+                        <span className="text-0">
+                            {formatPrice(product.price)}
+                        </span>
+                    </li>
+                ))}
+        </ul>
+    );
+}
+
+// Memoize component so that we don't unintentionally re-render this component
+let MemoizedRecommenedProductList = memo(RecommendedProductList);
+
 function ProductList({ products }: { products: Array<Product> }) {
     function formatPrice(price: number) {
-        // return price.toLocaleString("es-CO", {
-        //     style: "currency",
-        //     currency: "COP",
-        //     currencyDisplay: "code",
-        // });
         return new Intl.NumberFormat("es-CO", {
             style: "currency",
             currency: "COP",
@@ -25,7 +69,7 @@ function ProductList({ products }: { products: Array<Product> }) {
                 <li
                     key={product.id}
                     className={
-                        `box` +
+                        `box p-xs` +
                         " " +
                         `${
                             product.price <= 100
@@ -91,12 +135,6 @@ function ProductSelectSort({
             </select>
         </form>
     );
-}
-
-enum SortOption {
-    PRICE = "price",
-    NAME = "name",
-    NONE = "",
 }
 
 function App() {
@@ -186,9 +224,21 @@ function App() {
                 ) : (
                     <ProductList products={products} />
                 )}
+                <h3 className="text-2">Recommended products!</h3>
+                <MemoizedRecommenedProductList />
             </article>
         </main>
     );
+}
+
+// UTILS
+
+function formatPrice(price: number) {
+    return new Intl.NumberFormat("es-CO", {
+        style: "currency",
+        currency: "COP",
+        currencyDisplay: "code",
+    }).format(price);
 }
 
 export default App;
