@@ -9,7 +9,18 @@ function ProductList({ products }: { products: Array<Product> }) {
             className="center [--center-width:theme(contentWidth.3)] auto-grid"
         >
             {products.map((product) => (
-                <li key={product.id} className="box">
+                <li
+                    key={product.id}
+                    className={
+                        `box` +
+                        " " +
+                        `${
+                            product.price <= 100
+                                ? "border-light-green-9 border-4"
+                                : ""
+                        }`
+                    }
+                >
                     <h4>{product.title}</h4>
                     <p>{product.description}</p>
                     <span>${product.price}</span>
