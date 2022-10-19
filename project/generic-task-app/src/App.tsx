@@ -1,4 +1,12 @@
-import { useEffect, useState } from "react";
+import {
+    ChangeEvent,
+    FormEvent,
+    FormEventHandler,
+    useEffect,
+    useReducer,
+    useRef,
+    useState,
+} from "react";
 import { api } from "./api";
 import { Item } from "./types";
 
@@ -11,7 +19,6 @@ function TaskList({
     handleDelete: (id: Item["id"]) => void;
     handleToggle: (id: Item["id"]) => void;
 }) {
-    let toggleStyles = "line-through";
     if (!items.length) {
         return <p>Seems like you're done with your tasks! ✌️</p>;
     }
@@ -33,6 +40,32 @@ function TaskList({
                 </li>
             ))}
         </ul>
+    );
+}
+
+function TaskInput({
+    handleAdd,
+}: {
+    handleAdd: (e: ChangeEvent<HTMLFormElement>) => void;
+}) {
+    let inputRef = useRef<HTMLInputElement>(null);
+    useEffect(() => {
+        if (inputRef.current instanceof HTMLInputElement) {
+            inputRef.current.focus();
+        }
+    }, []);
+    return (
+        <form action="" className="stack center" onSubmit={handleAdd}>
+            <label htmlFor="new-task">New task:</label>
+            <input
+                type="text"
+                name="new-task"
+                id="new-task"
+                placeholder="enter a new task"
+                ref={inputRef}
+            />
+            <button type="submit">Add task</button>
+        </form>
     );
 }
 
@@ -59,11 +92,26 @@ function App() {
         setItems(newItems);
     }
 
+    function handleAdd(event: ChangeEvent<HTMLFormElement>) {
+        event.preventDefault();
+        let newTaskInput = event.target.elements.namedItem("new-task");
+        if (newTaskInput instanceof HTMLInputElement) {
+            let newTaskValue = newTaskInput.value;
+            setItems((items) => [
+                ...items,
+                { id: items.length + 1, text: newTaskValue, completed: false },
+            ]);
+            newTaskInput.value = "";
+            newTaskInput.focus();
+        }
+    }
+
     return (
         <main className="mlb-l">
             <article className="center stack">
                 <h1 className="text-3">Generic Task App</h1>
                 <hr />
+                <TaskInput handleAdd={handleAdd} />
                 {isLoading ? (
                     <p>Loading your data...</p>
                 ) : (
