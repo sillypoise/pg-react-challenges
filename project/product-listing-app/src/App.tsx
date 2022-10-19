@@ -3,6 +3,18 @@ import { api } from "./api";
 import { Product } from "./types";
 
 function ProductList({ products }: { products: Array<Product> }) {
+    function formatPrice(price: number) {
+        // return price.toLocaleString("es-CO", {
+        //     style: "currency",
+        //     currency: "COP",
+        //     currencyDisplay: "code",
+        // });
+        return new Intl.NumberFormat("es-CO", {
+            style: "currency",
+            currency: "COP",
+            currencyDisplay: "code",
+        }).format(price);
+    }
     return (
         <ul
             role="list"
@@ -23,7 +35,7 @@ function ProductList({ products }: { products: Array<Product> }) {
                 >
                     <h4>{product.title}</h4>
                     <p>{product.description}</p>
-                    <span>${product.price}</span>
+                    <span className="text-0">{formatPrice(product.price)}</span>
                 </li>
             ))}
         </ul>
