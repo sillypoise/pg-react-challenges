@@ -92,10 +92,6 @@ function ProductSelectSort({
     );
 }
 
-function checkLocalStorage(key: string, initialState: string) {
-    return localStorage.getItem(key) || initialState;
-}
-
 enum SortOption {
     PRICE = "price",
     NAME = "name",
@@ -111,6 +107,8 @@ function App() {
         return SortOption.NONE;
     });
     let [query, setQuery] = useState(() => {
+        let lsVal = localStorage.getItem("query");
+        if (lsVal) return lsVal;
         return "";
     });
 
@@ -184,7 +182,6 @@ function App() {
                     <ProductList products={products} />
                 )}
             </article>
-            {/* <pre>{JSON.stringify(products, null, 4)}</pre> */}
         </main>
     );
 }
