@@ -64,6 +64,28 @@ function ProductSearchInput({
     );
 }
 
+function ProductSelectSort({
+    handleSort,
+}: {
+    handleSort: (e: ChangeEvent<HTMLSelectElement>) => void;
+}) {
+    return (
+        <form action="" className="cluster gap-xs">
+            <label htmlFor="product:sort">Sort by:</label>
+            <select
+                name="sort"
+                id="product:sort"
+                onChange={handleSort}
+                className="border-2 rounded-md p-3xs"
+            >
+                <option value="">...</option>
+                <option value="price">price</option>
+                <option value="name">name</option>
+            </select>
+        </form>
+    );
+}
+
 function App() {
     let [products, setProducts] = useState<Array<Product>>([]);
     let [isLoading, setIsLoading] = useState(true);
@@ -82,11 +104,30 @@ function App() {
         setQuery(inputValue);
     }
 
+    function handleSort(event: ChangeEvent<HTMLSelectElement>) {
+        let selectedOption = event.target.value;
+        let productsCopy = [...products];
+
+        if (selectedOption === "price") {
+            let productsByPrice = productsCopy.sort((a, b) => {
+                if (a.price < b.price) return -1;
+                return 1;
+            });
+            setProducts(productsByPrice);
+        } else if (selectedOption === "name") {
+            let productsByName = productsCopy.sort((a, b) => {
+                return new Intl.Collator("es").compare(a.title, b.title);
+            });
+            setProducts(productsByName);
+        }
+    }
+
     return (
         <main className="mlb-l">
             <article className="stack center">
                 <h1 className="text-3">Product listing app</h1>
                 <hr />
+                <ProductSelectSort handleSort={handleSort} />
                 <ProductSearchInput handleQuery={handleQuery} />
                 {isLoading ? (
                     <p>Loading your products...</p>
@@ -94,6 +135,7 @@ function App() {
                     <ProductList products={products} />
                 )}
             </article>
+            {/* <pre>{JSON.stringify(products, null, 4)}</pre> */}
         </main>
     );
 }
