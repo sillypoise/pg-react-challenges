@@ -9,4 +9,5 @@ You will need to create the following features:
 -   [x] Ability to delete a task
 -   [x] Ability to toggle a task between completed and not completed
 -   [x] Showing a line-through decoration on completed tasks
--   [ ] Have focus always be on input whenever appropriate, i.e. startup and after deleting/creating task
+-   [x] Have focus always be on input whenever appropriate, i.e. startup and after deleting/creating task
+-   [x] Prevent adding empty tasks

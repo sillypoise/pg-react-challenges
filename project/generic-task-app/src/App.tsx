@@ -97,6 +97,7 @@ function App() {
         let newTaskInput = event.target.elements.namedItem("new-task");
         if (newTaskInput instanceof HTMLInputElement) {
             let newTaskValue = newTaskInput.value;
+            if (!newTaskValue) return;
             setItems((items) => [
                 ...items,
                 { id: items.length + 1, text: newTaskValue, completed: false },
