@@ -38,9 +38,10 @@ let api = {
         ];
 
         if (query) {
-            results = results.filter((product) =>
-                product.title.includes(query)
-            );
+            results = results.filter((product) => {
+                let titleLowerCase = product.title.toLowerCase();
+                return titleLowerCase.includes(query);
+            });
         }
 
         return new Promise((resolve) =>
