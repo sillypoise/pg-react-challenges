@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { api } from "./api";
 import { Product } from "./types";
 
@@ -43,8 +43,10 @@ function ProductList({ products }: { products: Array<Product> }) {
 }
 
 function ProductSearchInput({
+    query,
     handleQuery,
 }: {
+    query: string;
     handleQuery: (event: ChangeEvent<HTMLInputElement>) => void;
 }) {
     return (
@@ -58,6 +60,7 @@ function ProductSearchInput({
                     placeholder="search a product..."
                     className="border-2 rounded-md p-3xs"
                     onChange={handleQuery}
+                    value={query}
                 />
             </form>
         </div>
@@ -65,8 +68,10 @@ function ProductSearchInput({
 }
 
 function ProductSelectSort({
+    sortOption,
     handleSort,
 }: {
+    sortOption: SortOption;
     handleSort: (e: ChangeEvent<HTMLSelectElement>) => void;
 }) {
     return (
@@ -77,6 +82,7 @@ function ProductSelectSort({
                 id="product:sort"
                 onChange={handleSort}
                 className="border-2 rounded-md p-3xs"
+                value={sortOption}
             >
                 <option value="">...</option>
                 <option value="price">price</option>
@@ -86,10 +92,58 @@ function ProductSelectSort({
     );
 }
 
+function checkLocalStorage(key: string, initialState: string) {
+    return localStorage.getItem(key) || initialState;
+}
+
+enum SortOption {
+    PRICE = "price",
+    NAME = "name",
+    NONE = "",
+}
+
 function App() {
     let [products, setProducts] = useState<Array<Product>>([]);
     let [isLoading, setIsLoading] = useState(true);
-    let [query, setQuery] = useState("");
+    let [sortOption, setSortOption] = useState<SortOption>(() => {
+        let lsVal = localStorage.getItem("sortOption") as SortOption;
+        if (lsVal) return lsVal;
+        return SortOption.NONE;
+    });
+    let [query, setQuery] = useState(() => {
+        return "";
+    });
+
+    useMemo(() => {
+        let productsCopy = [...products];
+        if (sortOption === SortOption.PRICE) {
+            setSortOption(sortOption);
+            console.log("sorting by price");
+            let productsByPrice = productsCopy.sort((a, b) => {
+                if (a.price < b.price) return -1;
+                return 1;
+            });
+            setProducts(productsByPrice);
+        } else if (sortOption === SortOption.NAME) {
+            console.log("sorting by name");
+            setSortOption(sortOption);
+            let productsByName = productsCopy.sort((a, b) => {
+                return new Intl.Collator("es").compare(a.title, b.title);
+            });
+            setProducts(productsByName);
+        } else if (sortOption === SortOption.NONE) {
+            console.log("no sorting");
+            setSortOption(sortOption);
+        }
+    }, [sortOption]);
+
+    useEffect(() => {
+        localStorage.setItem("query", query);
+    }, [query]);
+
+    useEffect(() => {
+        localStorage.setItem("sortOption", sortOption);
+    }, [sortOption]);
 
     useEffect(() => {
         api.search(query).then((data) => {
@@ -99,26 +153,18 @@ function App() {
     }, [query]);
 
     function handleQuery(event: ChangeEvent<HTMLInputElement>) {
-        console.dir(event.target.value);
         let inputValue = event.target.value.toLowerCase();
         setQuery(inputValue);
     }
 
     function handleSort(event: ChangeEvent<HTMLSelectElement>) {
         let selectedOption = event.target.value;
-        let productsCopy = [...products];
-
-        if (selectedOption === "price") {
-            let productsByPrice = productsCopy.sort((a, b) => {
-                if (a.price < b.price) return -1;
-                return 1;
-            });
-            setProducts(productsByPrice);
-        } else if (selectedOption === "name") {
-            let productsByName = productsCopy.sort((a, b) => {
-                return new Intl.Collator("es").compare(a.title, b.title);
-            });
-            setProducts(productsByName);
+        if (
+            selectedOption === SortOption.PRICE ||
+            selectedOption === SortOption.NAME ||
+            selectedOption === SortOption.NONE
+        ) {
+            setSortOption(selectedOption);
         }
     }
 
@@ -127,8 +173,11 @@ function App() {
             <article className="stack center">
                 <h1 className="text-3">Product listing app</h1>
                 <hr />
-                <ProductSelectSort handleSort={handleSort} />
-                <ProductSearchInput handleQuery={handleQuery} />
+                <ProductSelectSort
+                    handleSort={handleSort}
+                    sortOption={sortOption}
+                />
+                <ProductSearchInput handleQuery={handleQuery} query={query} />
                 {isLoading ? (
                     <p>Loading your products...</p>
                 ) : (
