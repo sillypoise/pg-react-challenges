@@ -1,6 +1,7 @@
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { api } from "./api";
 import { Product } from "./types";
+import { z } from "zod";
 
 function ProductList({ products }: { products: Array<Product> }) {
     function formatPrice(price: number) {
@@ -102,9 +103,13 @@ function App() {
     let [products, setProducts] = useState<Array<Product>>([]);
     let [isLoading, setIsLoading] = useState(true);
     let [sortOption, setSortOption] = useState<SortOption>(() => {
-        let lsVal = localStorage.getItem("sortOption") as SortOption;
-        if (lsVal) return lsVal;
-        return SortOption.NONE;
+        let lsVal = localStorage.getItem("sortOption");
+        try {
+            let parsedLsVal = z.nativeEnum(SortOption).parse(lsVal);
+            return parsedLsVal;
+        } catch (e) {
+            return SortOption.NONE;
+        }
     });
     let [query, setQuery] = useState(() => {
         let lsVal = localStorage.getItem("query");
