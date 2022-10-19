@@ -1,0 +1,89 @@
+body {
+    color: var(--neutral-on-surface-0);
+    background: var(--neutral-surface-0);
+    font-size: theme(fontSize.1);
+    font-family: theme(fontFamily.sans);
+    line-height: theme(lineHeight.2);
+    letter-spacing: theme(letterSpacing.00);
+    overflow-x: hidden;
+}
+
+h1,
+h2,
+h3 {
+    line-height: theme(lineHeight.0);
+    letter-spacing: theme(letterSpacing.000);
+}
+
+h1 {
+    font-size: theme(fontSize.5);
+}
+
+h2 {
+    font-size: theme(fontSize.4);
+}
+
+h3 {
+    font-size: theme(fontSize.3);
+}
+
+p,
+li,
+blockquote:not([class]) {
+    max-inline-size: theme(contentWidth.4);
+}
+
+h1,
+h2,
+h3 {
+    max-inline-size: theme(contentWidth.1);
+}
+
+blockquote:not([class]) {
+    font-family: theme(fontFamily.serif);
+    font-size: theme(fontSize.2);
+}
+
+blockquote:not([class]) p:last-of-type {
+    font-family: theme(fontFamily.sans);
+    font-size: theme(fontSize.1);
+    font-weight: theme(fontWeight.normal);
+}
+
+svg {
+    height: 2ex;
+    width: auto;
+    flex: none;
+}
+
+[role="list"] {
+    padding: 0;
+}
+
+/* Base interactive elements */
+
+a {
+    color: currentcolor;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+:focus {
+    outline: 2px solid;
+    outline-offset: 0.3ch;
+}
+
+:target {
+    scroll-margin-top: 2ex;
+}
+
+main:focus {
+    outline: none;
+}
+
+::selection {
+    color: var(--neutral-surface-0);
+    background: var(--neutral-on-surface-0);
+}

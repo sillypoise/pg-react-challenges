@@ -1,0 +1,125 @@
+/* COLOR SCHEMES */
+
+/* LIGHT SCHEME */
+:where(:root) {
+    /* NEUTRAL */
+    --neutral-surface-0: theme(colors.scheme.light.neutral.surface[0]);
+    --neutral-surface-1: theme(colors.scheme.light.neutral.surface[1]);
+    --neutral-surface-2: theme(colors.scheme.light.neutral.surface[2]);
+    --neutral-surface-3: theme(colors.scheme.light.neutral.surface[3]);
+    --neutral-surface-4: theme(colors.scheme.light.neutral.surface[4]);
+    --neutral-on-surface-0: theme(colors.scheme.light.neutral.on-surface[0]);
+    --neutral-on-surface-1: theme(colors.scheme.light.neutral.on-surface[1]);
+    --neutral-border-0: theme(colors.scheme.light.neutral.border[0]);
+    --neutral-border-1: theme(colors.scheme.light.neutral.border[1]);
+    --neutral-border-2: theme(colors.scheme.light.neutral.border[2]);
+    --neutral-solid-0: theme(colors.scheme.light.neutral.solid[0]);
+    --neutral-solid-1: theme(colors.scheme.light.neutral.solid[1]);
+    /* PRIMARY */
+    --primary-surface-0: theme(colors.scheme.light.primary.surface[0]);
+    --primary-surface-1: theme(colors.scheme.light.primary.surface[1]);
+    --primary-surface-2: theme(colors.scheme.light.primary.surface[2]);
+    --primary-surface-3: theme(colors.scheme.light.primary.surface[3]);
+    --primary-surface-4: theme(colors.scheme.light.primary.surface[4]);
+    --primary-on-surface-0: theme(colors.scheme.light.primary.on-surface[0]);
+    --primary-on-surface-1: theme(colors.scheme.light.primary.on-surface[1]);
+    --primary-border-0: theme(colors.scheme.light.primary.border[0]);
+    --primary-border-1: theme(colors.scheme.light.primary.border[1]);
+    --primary-border-2: theme(colors.scheme.light.primary.border[2]);
+    --primary-solid-0: theme(colors.scheme.light.primary.solid[0]);
+    --primary-solid-1: theme(colors.scheme.light.primary.solid[1]);
+}
+
+/* DARK SCHEME */
+@media (prefers-color-scheme: dark) {
+    :where(:root) {
+        /* NEUTRAL */
+        --neutral-surface-0: theme(colors.scheme.dark.neutral.surface[0]);
+        --neutral-surface-1: theme(colors.scheme.dark.neutral.surface[1]);
+        --neutral-surface-2: theme(colors.scheme.dark.neutral.surface[2]);
+        --neutral-surface-3: theme(colors.scheme.dark.neutral.surface[3]);
+        --neutral-surface-4: theme(colors.scheme.dark.neutral.surface[4]);
+        --neutral-on-surface-0: theme(colors.scheme.dark.neutral.on-surface[0]);
+        --neutral-on-surface-1: theme(colors.scheme.dark.neutral.on-surface[1]);
+        --neutral-border-0: theme(colors.scheme.dark.neutral.border[0]);
+        --neutral-border-1: theme(colors.scheme.dark.neutral.border[1]);
+        --neutral-border-2: theme(colors.scheme.dark.neutral.border[2]);
+        --neutral-solid-0: theme(colors.scheme.dark.neutral.solid[0]);
+        --neutral-solid-1: theme(colors.scheme.dark.neutral.solid[1]);
+        /* PRIMARY */
+        --primary-surface-0: theme(colors.scheme.dark.primary.surface[0]);
+        --primary-surface-1: theme(colors.scheme.dark.primary.surface[1]);
+        --primary-surface-2: theme(colors.scheme.dark.primary.surface[2]);
+        --primary-surface-3: theme(colors.scheme.dark.primary.surface[3]);
+        --primary-surface-4: theme(colors.scheme.dark.primary.surface[4]);
+        --primary-on-surface-0: theme(colors.scheme.dark.primary.on-surface[0]);
+        --primary-on-surface-1: theme(colors.scheme.dark.primary.on-surface[1]);
+        --primary-border-0: theme(colors.scheme.dark.primary.border[0]);
+        --primary-border-1: theme(colors.scheme.dark.primary.border[1]);
+        --primary-border-2: theme(colors.scheme.dark.primary.border[2]);
+        --primary-solid-0: theme(colors.scheme.dark.primary.solid[0]);
+        --primary-solid-1: theme(colors.scheme.dark.primary.solid[1]);
+    }
+}
+
+/* DATA CONTROLLED SCHEMES */
+[data-scheme="light"] {
+    /* NEUTRAL */
+    --neutral-surface-0: theme(colors.scheme.light.neutral.surface[0]);
+    --neutral-surface-1: theme(colors.scheme.light.neutral.surface[1]);
+    --neutral-surface-2: theme(colors.scheme.light.neutral.surface[2]);
+    --neutral-surface-3: theme(colors.scheme.light.neutral.surface[3]);
+    --neutral-surface-4: theme(colors.scheme.light.neutral.surface[4]);
+    --neutral-on-surface-0: theme(colors.scheme.light.neutral.on-surface[0]);
+    --neutral-on-surface-1: theme(colors.scheme.light.neutral.on-surface[1]);
+    --neutral-border-0: theme(colors.scheme.light.neutral.border[0]);
+    --neutral-border-1: theme(colors.scheme.light.neutral.border[1]);
+    --neutral-border-2: theme(colors.scheme.light.neutral.border[2]);
+    --neutral-solid-0: theme(colors.scheme.light.neutral.solid[0]);
+    --neutral-solid-1: theme(colors.scheme.light.neutral.solid[1]);
+    /* PRIMARY */
+    --primary-surface-0: theme(colors.scheme.light.primary.surface[0]);
+    --primary-surface-1: theme(colors.scheme.light.primary.surface[1]);
+    --primary-surface-2: theme(colors.scheme.light.primary.surface[2]);
+    --primary-surface-3: theme(colors.scheme.light.primary.surface[3]);
+    --primary-surface-4: theme(colors.scheme.light.primary.surface[4]);
+    --primary-on-surface-0: theme(colors.scheme.light.primary.on-surface[0]);
+    --primary-on-surface-1: theme(colors.scheme.light.primary.on-surface[1]);
+    --primary-border-0: theme(colors.scheme.light.primary.border[0]);
+    --primary-border-1: theme(colors.scheme.light.primary.border[1]);
+    --primary-border-2: theme(colors.scheme.light.primary.border[2]);
+    --primary-solid-0: theme(colors.scheme.light.primary.solid[0]);
+    --primary-solid-1: theme(colors.scheme.light.primary.solid[1]);
+}
+
+[data-scheme="dark"] {
+    /* NEUTRAL */
+    --neutral-surface-0: theme(colors.scheme.dark.neutral.surface[0]);
+    --neutral-surface-1: theme(colors.scheme.dark.neutral.surface[1]);
+    --neutral-surface-2: theme(colors.scheme.dark.neutral.surface[2]);
+    --neutral-surface-3: theme(colors.scheme.dark.neutral.surface[3]);
+    --neutral-surface-4: theme(colors.scheme.dark.neutral.surface[4]);
+    --neutral-on-surface-0: theme(colors.scheme.dark.neutral.on-surface[0]);
+    --neutral-on-surface-1: theme(colors.scheme.dark.neutral.on-surface[1]);
+    --neutral-border-0: theme(colors.scheme.dark.neutral.border[0]);
+    --neutral-border-1: theme(colors.scheme.dark.neutral.border[1]);
+    --neutral-border-2: theme(colors.scheme.dark.neutral.border[2]);
+    --neutral-solid-0: theme(colors.scheme.dark.neutral.solid[0]);
+    --neutral-solid-1: theme(colors.scheme.dark.neutral.solid[1]);
+    /* PRIMARY */
+    --primary-surface-0: theme(colors.scheme.dark.primary.surface[0]);
+    --primary-surface-1: theme(colors.scheme.dark.primary.surface[1]);
+    --primary-surface-2: theme(colors.scheme.dark.primary.surface[2]);
+    --primary-surface-3: theme(colors.scheme.dark.primary.surface[3]);
+    --primary-surface-4: theme(colors.scheme.dark.primary.surface[4]);
+    --primary-on-surface-0: theme(colors.scheme.dark.primary.on-surface[0]);
+    --primary-on-surface-1: theme(colors.scheme.dark.primary.on-surface[1]);
+    --primary-border-0: theme(colors.scheme.dark.primary.border[0]);
+    --primary-border-1: theme(colors.scheme.dark.primary.border[1]);
+    --primary-border-2: theme(colors.scheme.dark.primary.border[2]);
+    --primary-solid-0: theme(colors.scheme.dark.primary.solid[0]);
+    --primary-solid-1: theme(colors.scheme.dark.primary.solid[1]);
+}
+
+[data-scheme="nord"] {
+}
