@@ -68,7 +68,13 @@ function RecommendedProductList() {
 // Memoize component so that we don't unintentionally re-render this component
 let MemoizedRecommenedProductList = memo(RecommendedProductList);
 
-function ProductList({ products }: { products: Array<Product> }) {
+function ProductList({
+    products,
+    handleFavToggle,
+}: {
+    products: Array<Product>;
+    handleFavToggle: (id: Product["id"]) => void;
+}) {
     function formatPrice(price: number) {
         return new Intl.NumberFormat("es-CO", {
             style: "currency",
@@ -93,10 +99,19 @@ function ProductList({ products }: { products: Array<Product> }) {
                                 : ""
                         }`
                     }
+                    onClick={() => handleFavToggle(product.id)}
                 >
                     <h4>{product.title}</h4>
                     <p>{product.description}</p>
                     <span className="text-0">{formatPrice(product.price)}</span>
+                    <p className="cursor-pointer text-0 select-none">
+                        fav:{" "}
+                        {product.favourite ? (
+                            <span className="text-1">🌕</span>
+                        ) : (
+                            <span className="text-1">🌑</span>
+                        )}
+                    </p>
                 </li>
             ))}
         </ul>
@@ -202,7 +217,11 @@ function App() {
 
     useEffect(() => {
         api.search(debouncedQuery).then((data) => {
-            setProducts(data);
+            let productsWithFavourites = data.map((product) => ({
+                ...product,
+                favourite: false,
+            }));
+            setProducts(productsWithFavourites);
             setIsLoading(false);
         });
     }, [debouncedQuery]);
@@ -223,6 +242,17 @@ function App() {
         }
     }
 
+    function handleFavToggle(id: Product["id"]) {
+        console.log();
+        setProducts(
+            products.map((product) =>
+                product.id === id
+                    ? { ...product, favourite: !product.favourite }
+                    : product
+            )
+        );
+    }
+
     return (
         <main className="mlb-l">
             <article className="stack center">
@@ -236,10 +266,15 @@ function App() {
                 {isLoading ? (
                     <p>Loading your products...</p>
                 ) : (
-                    <ProductList products={products} />
+                    <ProductList
+                        handleFavToggle={handleFavToggle}
+                        products={products}
+                    />
                 )}
                 <h3 className="text-2">Recommended products!</h3>
-                <MemoizedRecommenedProductList />
+                <MemoizedRecommenedProductList
+                // handleFavToggle={handleFavToggle}
+                />
             </article>
         </main>
     );
