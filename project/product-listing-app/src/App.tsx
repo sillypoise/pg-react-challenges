@@ -175,6 +175,8 @@ function App() {
             if (lsVal) {
                 console.dir(JSON.parse(lsVal));
                 return JSON.parse(lsVal);
+            } else {
+                return [];
             }
         } catch (e) {
             return [];
