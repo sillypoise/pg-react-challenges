@@ -11,4 +11,4 @@
 -   [x] Recommended products should be random and should not change when search query changes
 -   [x] Make search doesn't re-render too frequently
 -   [x] Add ability to add and remove products from favourites. Favourited products should have a `fav` class
--   [ ] Favourites should be persisted when we reload the page
+-   [x] Favourites should be persisted when we reload the page
