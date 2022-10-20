@@ -9,6 +9,22 @@ enum SortOption {
     NONE = "",
 }
 
+function useDebounce(value: string, delay: number = 1000) {
+    const [debouncedValue, setDebouncedValue] = useState(value);
+
+    useEffect(() => {
+        let handler = setTimeout(() => {
+            setDebouncedValue(value);
+        }, delay);
+
+        return () => {
+            clearTimeout(handler);
+        };
+    }, [value, delay]);
+
+    return debouncedValue;
+}
+
 function RecommendedProductList() {
     let [recommendedProducts, setRecommendedProducts] = useState<
         Array<Product>
@@ -154,26 +170,24 @@ function App() {
         if (lsVal) return lsVal;
         return "";
     });
+    let debouncedQuery = useDebounce(query, 500);
 
     useMemo(() => {
         let productsCopy = [...products];
         if (sortOption === SortOption.PRICE) {
             setSortOption(sortOption);
-            console.log("sorting by price");
             let productsByPrice = productsCopy.sort((a, b) => {
                 if (a.price < b.price) return -1;
                 return 1;
             });
             setProducts(productsByPrice);
         } else if (sortOption === SortOption.NAME) {
-            console.log("sorting by name");
             setSortOption(sortOption);
             let productsByName = productsCopy.sort((a, b) => {
                 return new Intl.Collator("es").compare(a.title, b.title);
             });
             setProducts(productsByName);
         } else if (sortOption === SortOption.NONE) {
-            console.log("no sorting");
             setSortOption(sortOption);
         }
     }, [sortOption]);
@@ -187,11 +201,11 @@ function App() {
     }, [sortOption]);
 
     useEffect(() => {
-        api.search(query).then((data) => {
+        api.search(debouncedQuery).then((data) => {
             setProducts(data);
             setIsLoading(false);
         });
-    }, [query]);
+    }, [debouncedQuery]);
 
     function handleQuery(event: ChangeEvent<HTMLInputElement>) {
         let inputValue = event.target.value.toLowerCase();
