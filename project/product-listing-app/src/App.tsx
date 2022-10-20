@@ -169,7 +169,17 @@ function ProductSelectSort({
 }
 
 function App() {
-    let [products, setProducts] = useState<Array<Product>>([]);
+    let [products, setProducts] = useState<Array<Product>>(() => {
+        let lsVal = localStorage.getItem("products");
+        try {
+            if (lsVal) {
+                console.dir(JSON.parse(lsVal));
+                return JSON.parse(lsVal);
+            }
+        } catch (e) {
+            return [];
+        }
+    });
     let [isLoading, setIsLoading] = useState(true);
     let [sortOption, setSortOption] = useState<SortOption>(() => {
         let lsVal = localStorage.getItem("sortOption");
@@ -206,6 +216,10 @@ function App() {
             setSortOption(sortOption);
         }
     }, [sortOption]);
+
+    useEffect(() => {
+        localStorage.setItem("products", JSON.stringify(products));
+    }, [products]);
 
     useEffect(() => {
         localStorage.setItem("query", query);
