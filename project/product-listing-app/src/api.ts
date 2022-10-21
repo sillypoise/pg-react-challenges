@@ -1,8 +1,6 @@
-import { Product } from "./types";
-
 let api = {
-    search: (query?: string): Promise<Array<Product>> => {
-        let results = [
+    list: () => {
+        return [
             {
                 id: 1,
                 title: "TV 55 pulgadas",
@@ -36,18 +34,6 @@ let api = {
                 price: 50,
             },
         ];
-
-        if (query) {
-            results = results.filter((product) => {
-                let titleLowerCase = product.title.toLowerCase();
-                return titleLowerCase.includes(query);
-            });
-        }
-
-        return new Promise((resolve) =>
-            setTimeout(() => resolve(results), 1000)
-        );
     },
 };
-
 export { api };
