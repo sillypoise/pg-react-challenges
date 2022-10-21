@@ -77,7 +77,18 @@ function SearchProductInput({
 }
 
 function App() {
-    let [query, setQuery] = useState("");
+    let [query, setQuery] = useState(() => {
+        let localStorageQuery = localStorage.getItem("query");
+        if (localStorageQuery) {
+            return JSON.parse(localStorageQuery);
+        }
+        return "";
+    });
+
+    useEffect(() => {
+        localStorage.setItem("query", JSON.stringify(query));
+    }, [query]);
+
     return (
         <main className="mlb-l">
             <article className="center [--center-width:theme(contentWidth.3)] stack">
