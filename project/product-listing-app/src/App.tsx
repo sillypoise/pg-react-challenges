@@ -24,7 +24,18 @@ function ProductList() {
             ) : (
                 <ul role="list" className="auto-grid">
                     {products.map((product) => (
-                        <li key={product.id} className="box p-s">
+                        <li
+                            key={product.id}
+                            className={
+                                `box p-s` +
+                                " " +
+                                `${
+                                    product.price <= 100
+                                        ? "border-light-green-9 border-4"
+                                        : ""
+                                }`
+                            }
+                        >
                             <h4>{product.title}</h4>
                             <p>{product.description}</p>
                             <span>$ {product.price}</span>
