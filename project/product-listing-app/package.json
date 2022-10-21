@@ -8,7 +8,7 @@
         "dev:vite": "vite",
         "build": "tsc && vite build",
         "preview": "vite preview",
-        "generate:css": "tailwindcss -i ./sp-styles/tailwind.css -o ./styles/tailwind.css"
+        "generate:css": "tailwindcss -i ../../sp-styles/tailwind.css -o ./styles/tailwind.css"
     },
     "dependencies": {},
     "devDependencies": {}

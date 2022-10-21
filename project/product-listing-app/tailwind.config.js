@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-let { light, dark, overlay } = require("./sp-styles/colors");
+let { light, dark, overlay } = require("../../sp-styles/colors");
 
 module.exports = {
     content: ["./src/**/*.{ts,tsx,jsx,js}"],
