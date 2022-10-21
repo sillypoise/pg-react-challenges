@@ -27,7 +27,7 @@ function ProductList() {
                         <li
                             key={product.id}
                             className={
-                                `box p-s` +
+                                `stack box p-s` +
                                 " " +
                                 `${
                                     product.price <= 100
@@ -38,7 +38,9 @@ function ProductList() {
                         >
                             <h4>{product.title}</h4>
                             <p>{product.description}</p>
-                            <span>$ {product.price}</span>
+                            <span className="text-0">
+                                {formatPrice(product.price)}
+                            </span>
                         </li>
                     ))}
                 </ul>
@@ -56,5 +58,11 @@ function App() {
 }
 
 // UTILS
+function formatPrice(price: number) {
+    return new Intl.NumberFormat("es-CO", {
+        style: "currency",
+        currency: "COP",
+    }).format(price);
+}
 
 export default App;
