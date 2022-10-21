@@ -16,9 +16,7 @@ function ProductList() {
     }, []);
 
     return (
-        <article className="stack center">
-            <h1 className="text-3">Product listing app</h1>
-            <hr />
+        <article className="">
             {isLoading ? (
                 <p>Loading...</p>
             ) : (
@@ -27,7 +25,7 @@ function ProductList() {
                         <li
                             key={product.id}
                             className={
-                                `stack box p-s` +
+                                `stack box p-xs` +
                                 " " +
                                 `${
                                     product.price <= 100
@@ -50,9 +48,26 @@ function ProductList() {
 }
 
 function App() {
+    let [query, setQuery] = useState("");
     return (
         <main className="mlb-l">
-            <ProductList />
+            <article className="center [--center-width:theme(contentWidth.3)] stack">
+                <h1 className="text-3">Product listing app</h1>
+                <hr />
+                <form action="" className="cluster gap-s ">
+                    <label htmlFor="product:query">Search:</label>
+                    <input
+                        type="text"
+                        name=""
+                        id="product:query"
+                        placeholder="search"
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        className="p-3xs rounded-md bg-[color:var(--neutral-surface-3)]"
+                    />
+                </form>
+                <ProductList />
+            </article>
         </main>
     );
 }
