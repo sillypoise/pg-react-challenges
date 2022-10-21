@@ -3,7 +3,7 @@ import { api } from "./api";
 import { Product } from "./types";
 import { z } from "zod";
 
-function App() {
+function ProductList() {
     let [products, setProducts] = useState<Array<Product>>([]);
     let [isLoading, setIsLoading] = useState(false);
 
@@ -14,17 +14,32 @@ function App() {
             setIsLoading(false);
         });
     }, []);
+
+    return (
+        <article className="stack center">
+            <h1 className="text-3">Product listing app</h1>
+            <hr />
+            {isLoading ? (
+                <p>Loading...</p>
+            ) : (
+                <ul role="list" className="auto-grid">
+                    {products.map((product) => (
+                        <li key={product.id} className="box p-s">
+                            <h4>{product.title}</h4>
+                            <p>{product.description}</p>
+                            <span>$ {product.price}</span>
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </article>
+    );
+}
+
+function App() {
     return (
         <main className="mlb-l">
-            <article className="stack center">
-                <h1 className="text-3">Product listing app</h1>
-                <hr />
-                {isLoading ? (
-                    <p>Loading...</p>
-                ) : (
-                    <pre>{JSON.stringify(products, null, 4)}</pre>
-                )}
-            </article>
+            <ProductList />
         </main>
     );
 }
