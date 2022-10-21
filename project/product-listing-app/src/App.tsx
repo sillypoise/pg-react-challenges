@@ -1,19 +1,25 @@
-import { ChangeEvent, memo, useEffect, useMemo, useState } from "react";
+import React, { ChangeEvent, memo, useEffect, useMemo, useState } from "react";
 import { api } from "./api";
 import { Product } from "./types";
 import { z } from "zod";
 
-function ProductList() {
+function ProductList({ query }: { query: string }) {
     let [products, setProducts] = useState<Array<Product>>([]);
     let [isLoading, setIsLoading] = useState(false);
+    let [debouncedQuery, setDebouncedQuery] = useState(query);
+
+    useEffect(() => {
+        let debouncer = setTimeout(() => setDebouncedQuery(query), 600);
+        return () => clearTimeout(debouncer);
+    }, [query, debouncedQuery]);
 
     useEffect(() => {
         setIsLoading(true);
-        api.list("").then((data) => {
+        api.list(debouncedQuery).then((data) => {
             setProducts(data);
             setIsLoading(false);
         });
-    }, []);
+    }, [debouncedQuery]);
 
     return (
         <article className="">
@@ -47,6 +53,29 @@ function ProductList() {
     );
 }
 
+function SearchProductInput({
+    query,
+    setQuery,
+}: {
+    query: string;
+    setQuery: React.Dispatch<React.SetStateAction<string>>;
+}) {
+    return (
+        <form action="" className="cluster gap-s ">
+            <label htmlFor="product:query">Search:</label>
+            <input
+                type="text"
+                name=""
+                id="product:query"
+                placeholder="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                className="p-3xs rounded-md bg-[color:var(--neutral-surface-3)]"
+            />
+        </form>
+    );
+}
+
 function App() {
     let [query, setQuery] = useState("");
     return (
@@ -54,19 +83,8 @@ function App() {
             <article className="center [--center-width:theme(contentWidth.3)] stack">
                 <h1 className="text-3">Product listing app</h1>
                 <hr />
-                <form action="" className="cluster gap-s ">
-                    <label htmlFor="product:query">Search:</label>
-                    <input
-                        type="text"
-                        name=""
-                        id="product:query"
-                        placeholder="search"
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                        className="p-3xs rounded-md bg-[color:var(--neutral-surface-3)]"
-                    />
-                </form>
-                <ProductList />
+                <SearchProductInput query={query} setQuery={setQuery} />
+                <ProductList query={query} />
             </article>
         </main>
     );

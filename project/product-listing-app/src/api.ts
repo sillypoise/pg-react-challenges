@@ -2,6 +2,8 @@ import { Product } from "./types";
 
 let api = {
     list: (query: string): Promise<Array<Product>> => {
+        console.count("API 💸");
+
         return new Promise((resolve) => {
             setTimeout(() => {
                 resolve(
