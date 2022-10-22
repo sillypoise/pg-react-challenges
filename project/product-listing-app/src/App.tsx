@@ -76,6 +76,27 @@ function SearchProductInput({
     );
 }
 
+function SelectProductSort() {
+    let [sortSelect, setSortSelect] = useState("");
+    return (
+        <form action="" className="cluster gap-s">
+            <label htmlFor="product:sort">Sort by:</label>
+            <select
+                name="product:sort"
+                id="product:sort"
+                value={sortSelect}
+                onChange={(e) => setSortSelect(e.target.value)}
+                className="p-3xs rounded-md bg-[color:var(--neutral-surface-3)]"
+            >
+                <option value="">choose...</option>
+                <option value="name">name</option>
+                <option value="price">price</option>
+            </select>
+            <p>Sorting by: {sortSelect}</p>
+        </form>
+    );
+}
+
 function App() {
     let [query, setQuery] = useState(() => {
         let localStorageQuery = localStorage.getItem("query");
@@ -94,7 +115,10 @@ function App() {
             <article className="center [--center-width:theme(contentWidth.3)] stack">
                 <h1 className="text-3">Product listing app</h1>
                 <hr />
-                <SearchProductInput query={query} setQuery={setQuery} />
+                <div className="cluster">
+                    <SearchProductInput query={query} setQuery={setQuery} />
+                    <SelectProductSort />
+                </div>
                 <ProductList query={query} />
             </article>
         </main>
