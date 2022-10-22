@@ -1,7 +1,13 @@
 import React, { ChangeEvent, memo, useEffect, useMemo, useState } from "react";
 import { api } from "./api";
-import { Product, SortBy } from "./types";
+import { Product } from "./types";
 import { z } from "zod";
+
+enum SortBy {
+    NAME = "name",
+    PRICE = "price",
+    NONE = "",
+}
 
 function ProductList({ query, sortBy }: { query: string; sortBy: SortBy }) {
     let [products, setProducts] = useState<Array<Product>>([]);
@@ -16,7 +22,11 @@ function ProductList({ query, sortBy }: { query: string; sortBy: SortBy }) {
     useEffect(() => {
         setIsLoading(true);
         api.list(debouncedQuery).then((data) => {
-            setProducts(data);
+            let productsWithFavourite = data.map((product) => ({
+                ...product,
+                favourite: false,
+            }));
+            setProducts(productsWithFavourite);
             setIsLoading(false);
         });
     }, [debouncedQuery]);
@@ -39,6 +49,16 @@ function ProductList({ query, sortBy }: { query: string; sortBy: SortBy }) {
         [sortBy, products]
     );
 
+    function handleFavToggle(id: number) {
+        setProducts(
+            products.map((product) =>
+                product.id === id
+                    ? { ...product, favourite: !product.favourite }
+                    : product
+            )
+        );
+    }
+
     return (
         <article className="">
             {isLoading ? (
@@ -60,9 +80,19 @@ function ProductList({ query, sortBy }: { query: string; sortBy: SortBy }) {
                         >
                             <h4>{product.title}</h4>
                             <p>{product.description}</p>
-                            <span className="text-0">
-                                {formatPrice(product.price)}
-                            </span>
+                            <div className="cluster justify-between">
+                                <span className="text-0">
+                                    {formatPrice(product.price)}
+                                </span>
+                                <button
+                                    onClick={() => handleFavToggle(product.id)}
+                                    className="bg-[transparent] cursor-pointer"
+                                >
+                                    <span>
+                                        {product.favourite ? "🌕" : "🌑"}
+                                    </span>
+                                </button>
+                            </div>
                         </li>
                     ))}
                 </ul>
