@@ -3,7 +3,7 @@ import { api } from "./api";
 import { Product } from "./types";
 import { z } from "zod";
 
-function ProductList({ query }: { query: string }) {
+function ProductList({ query, sortBy }: { query: string; sortBy: string }) {
     let [products, setProducts] = useState<Array<Product>>([]);
     let [isLoading, setIsLoading] = useState(false);
     let [debouncedQuery, setDebouncedQuery] = useState(query);
@@ -76,15 +76,20 @@ function SearchProductInput({
     );
 }
 
-function SelectProductSort() {
-    let [sortSelect, setSortSelect] = useState("");
+function SelectProductSort({
+    sortBy,
+    setSortSelect,
+}: {
+    sortBy: string;
+    setSortSelect: React.Dispatch<React.SetStateAction<string>>;
+}) {
     return (
         <form action="" className="cluster gap-s">
             <label htmlFor="product:sort">Sort by:</label>
             <select
                 name="product:sort"
                 id="product:sort"
-                value={sortSelect}
+                value={sortBy}
                 onChange={(e) => setSortSelect(e.target.value)}
                 className="p-3xs rounded-md bg-[color:var(--neutral-surface-3)]"
             >
@@ -92,7 +97,7 @@ function SelectProductSort() {
                 <option value="name">name</option>
                 <option value="price">price</option>
             </select>
-            <p>Sorting by: {sortSelect}</p>
+            <p>Sorting by: {sortBy}</p>
         </form>
     );
 }
@@ -105,10 +110,18 @@ function App() {
         }
         return "";
     });
+    let [sortBy, setSortSelect] = useState(() => {
+        let localStorageSortBy = localStorage.getItem("sortBy");
+        if (localStorageSortBy) {
+            return JSON.parse(localStorageSortBy);
+        }
+        return "";
+    });
 
     useEffect(() => {
         localStorage.setItem("query", JSON.stringify(query));
-    }, [query]);
+        localStorage.setItem("sortBy", JSON.stringify(sortBy));
+    }, [query, sortBy]);
 
     return (
         <main className="mlb-l">
@@ -117,9 +130,12 @@ function App() {
                 <hr />
                 <div className="cluster">
                     <SearchProductInput query={query} setQuery={setQuery} />
-                    <SelectProductSort />
+                    <SelectProductSort
+                        sortBy={sortBy}
+                        setSortSelect={setSortSelect}
+                    />
                 </div>
-                <ProductList query={query} />
+                <ProductList query={query} sortBy={sortBy} />
             </article>
         </main>
     );
