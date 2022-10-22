@@ -5,3 +5,9 @@ export type Product = {
     price: number;
     favourite?: boolean;
 };
+
+export enum SortBy {
+    NAME = "name",
+    PRICE = "price",
+    NONE = "",
+}

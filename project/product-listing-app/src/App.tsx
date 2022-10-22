@@ -1,9 +1,9 @@
 import React, { ChangeEvent, memo, useEffect, useMemo, useState } from "react";
 import { api } from "./api";
-import { Product } from "./types";
+import { Product, SortBy } from "./types";
 import { z } from "zod";
 
-function ProductList({ query, sortBy }: { query: string; sortBy: string }) {
+function ProductList({ query, sortBy }: { query: string; sortBy: SortBy }) {
     let [products, setProducts] = useState<Array<Product>>([]);
     let [isLoading, setIsLoading] = useState(false);
     let [debouncedQuery, setDebouncedQuery] = useState(query);
@@ -21,13 +21,28 @@ function ProductList({ query, sortBy }: { query: string; sortBy: string }) {
         });
     }, [debouncedQuery]);
 
+    function sortProducts(sortBy: SortBy) {
+        if (sortBy === "") return products;
+        if (sortBy === "name") {
+            return [...products].sort((a, b) =>
+                new Intl.Collator("es").compare(a.title, b.title)
+            );
+        }
+        if (sortBy === "price") {
+            return [...products].sort((a, b) => (a.price < b.price ? -1 : 1));
+        }
+        return products;
+    }
+
+    let sortedProducts = sortProducts(sortBy);
+
     return (
         <article className="">
             {isLoading ? (
                 <p>Loading...</p>
             ) : (
                 <ul role="list" className="auto-grid">
-                    {products.map((product) => (
+                    {sortedProducts.map((product) => (
                         <li
                             key={product.id}
                             className={
@@ -81,7 +96,7 @@ function SelectProductSort({
     setSortSelect,
 }: {
     sortBy: string;
-    setSortSelect: React.Dispatch<React.SetStateAction<string>>;
+    setSortSelect: React.Dispatch<React.SetStateAction<SortBy>>;
 }) {
     return (
         <form action="" className="cluster gap-s">
@@ -90,7 +105,7 @@ function SelectProductSort({
                 name="product:sort"
                 id="product:sort"
                 value={sortBy}
-                onChange={(e) => setSortSelect(e.target.value)}
+                onChange={(e) => setSortSelect(e.target.value as SortBy)}
                 className="p-3xs rounded-md bg-[color:var(--neutral-surface-3)]"
             >
                 <option value="">choose...</option>
@@ -110,7 +125,7 @@ function App() {
         }
         return "";
     });
-    let [sortBy, setSortSelect] = useState(() => {
+    let [sortBy, setSortSelect] = useState<SortBy>(() => {
         let localStorageSortBy = localStorage.getItem("sortBy");
         if (localStorageSortBy) {
             return JSON.parse(localStorageSortBy);
