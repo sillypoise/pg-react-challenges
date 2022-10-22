@@ -10,21 +10,29 @@ enum SortBy {
 }
 
 function ProductList({ query, sortBy }: { query: string; sortBy: SortBy }) {
-    let [products, setProducts] = useState<Array<Product>>([]);
+    let [products, setProducts] = useState<Array<Product>>(() => {
+        let localStorageProducts = localStorage.getItem("products");
+        if (localStorageProducts) {
+            return JSON.parse(localStorageProducts);
+        }
+        return [];
+    });
     let [isLoading, setIsLoading] = useState(false);
     let [debouncedQuery, setDebouncedQuery] = useState(query);
 
     useEffect(() => {
         let debouncer = setTimeout(() => setDebouncedQuery(query), 600);
         return () => clearTimeout(debouncer);
-    }, [query, debouncedQuery]);
+    }, [query]);
 
     useEffect(() => {
         setIsLoading(true);
         api.list(debouncedQuery).then((data) => {
             let productsWithFavourite = data.map((product) => ({
                 ...product,
-                favourite: false,
+                favourite: products.length
+                    ? products.find((p) => product.id === p.id)?.favourite
+                    : false,
             }));
             setProducts(productsWithFavourite);
             setIsLoading(false);
@@ -48,6 +56,10 @@ function ProductList({ query, sortBy }: { query: string; sortBy: SortBy }) {
         () => sortProducts(sortBy),
         [sortBy, products]
     );
+
+    useEffect(() => {
+        localStorage.setItem("products", JSON.stringify(sortedProducts));
+    }, [sortedProducts]);
 
     function handleFavToggle(id: number) {
         setProducts(
