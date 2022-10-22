@@ -22,19 +22,22 @@ function ProductList({ query, sortBy }: { query: string; sortBy: SortBy }) {
     }, [debouncedQuery]);
 
     function sortProducts(sortBy: SortBy) {
-        if (sortBy === "") return products;
-        if (sortBy === "name") {
+        if (sortBy === SortBy.NONE) return products;
+        if (sortBy === SortBy.NAME) {
             return [...products].sort((a, b) =>
                 new Intl.Collator("es").compare(a.title, b.title)
             );
         }
-        if (sortBy === "price") {
+        if (sortBy === SortBy.PRICE) {
             return [...products].sort((a, b) => (a.price < b.price ? -1 : 1));
         }
         return products;
     }
 
-    let sortedProducts = sortProducts(sortBy);
+    let sortedProducts = useMemo(
+        () => sortProducts(sortBy),
+        [sortBy, products]
+    );
 
     return (
         <article className="">
