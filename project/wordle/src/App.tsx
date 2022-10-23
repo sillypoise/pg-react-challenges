@@ -9,6 +9,8 @@ function App() {
     let [status, setStatus] = useState<"playing" | "finished">("playing");
     let [answer, setAnswer] = useState("");
 
+    // TODO Move state into a useReducer
+
     useEffect(() => {
         api.random().then((data) => setAnswer(data));
     }, []);
@@ -42,7 +44,8 @@ function App() {
                         firstEmptyIndex = words[turn].length;
                     }
 
-                    words[turn][firstEmptyIndex - 1] = "";
+                    let wordArray = Array.from(words[turn]);
+                    wordArray[firstEmptyIndex - 1] = "";
 
                     setWords(words.slice());
 
