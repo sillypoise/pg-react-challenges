@@ -11,8 +11,10 @@ function App() {
 
     let handleKeyDown = useCallback(
         function handleKeyDown(e: KeyboardEvent) {
+            if (status === "finished") return;
             switch (e.key) {
                 case "Enter": {
+                    if (words[turn].includes("")) return;
                     if (words[turn].join("") === answer) {
                         setStatus("finished");
                     }
@@ -68,10 +70,21 @@ function App() {
                 {words.map((word, wordIndex) => (
                     <section key={wordIndex} className="word">
                         {word.map((letter, letterIndex) => {
+                            let isCorrect =
+                                letter &&
+                                wordIndex < turn &&
+                                letter === answer[letterIndex];
+                            let isPresent =
+                                letter &&
+                                wordIndex < turn &&
+                                letter !== answer[letterIndex] &&
+                                answer.includes(letter);
                             return (
                                 <article
                                     key={letterIndex}
-                                    className={`letter` + " " + ``}
+                                    className={`letter ${
+                                        isCorrect && "correct"
+                                    } ${isPresent && "present"}`}
                                 >
                                     {letter}
                                 </article>
