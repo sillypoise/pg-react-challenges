@@ -2,16 +2,25 @@ import { useCallback, useEffect, useState } from "react";
 import { api } from "./api";
 
 function App() {
-    const answer = "RIGHT";
     let [words, setWords] = useState<Array<Array<string>>>(() =>
         Array.from({ length: 6 }, () => new Array(5).fill(""))
     );
     let [turn, setTurn] = useState(0);
     let [status, setStatus] = useState<"playing" | "finished">("playing");
+    let [answer, setAnswer] = useState("");
+
+    useEffect(() => {
+        api.random().then((data) => setAnswer(data));
+    }, []);
 
     let handleKeyDown = useCallback(
         function handleKeyDown(e: KeyboardEvent) {
-            if (status === "finished") return;
+            if (status === "finished") {
+                setWords(Array.from({ length: 6 }, () => Array(5).fill("")));
+                setTurn(0);
+                setStatus("playing");
+                return;
+            }
             switch (e.key) {
                 case "Enter": {
                     if (words[turn].includes("")) return;
@@ -60,9 +69,11 @@ function App() {
     );
 
     useEffect(() => {
-        window.addEventListener("keydown", handleKeyDown);
-        return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [handleKeyDown]);
+        if (answer) {
+            window.addEventListener("keydown", handleKeyDown);
+            return () => window.removeEventListener("keydown", handleKeyDown);
+        }
+    }, [handleKeyDown, answer]);
 
     return (
         <main className="mlb-l">
@@ -95,6 +106,8 @@ function App() {
                 <div className="grid">
                     <span>turn: {turn}</span>
                     <span>status: {status}</span>
+                    <span>{status === "finished" && "You won! 🎊🎊🎊"}</span>
+                    <span>answer: {answer}</span>
                 </div>
             </article>
         </main>
