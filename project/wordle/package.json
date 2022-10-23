@@ -1,0 +1,15 @@
+{
+    "name": "wordle",
+    "private": true,
+    "version": "0.0.0",
+    "scripts": {
+        "dev": "run-p \"dev:*\"",
+        "dev:css": "pnpm generate:css --watch",
+        "dev:vite": "vite",
+        "build": "tsc && vite build",
+        "preview": "vite preview",
+        "generate:css": "tailwindcss -i ../../sp-styles/tailwind.css -o ./styles/tailwind.css"
+    },
+    "dependencies": {},
+    "devDependencies": {}
+}
