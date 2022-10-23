@@ -1,12 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { api } from "./api";
 
 function App() {
-    const [count, setCount] = useState(0);
+    const answer = "RIGHT";
+    let [words, setWords] = useState<Array<Array<string>>>(() =>
+        Array.from({ length: 6 }, () => new Array(5).fill("hi"))
+    );
+
+    // useEffect(() => {
+    //     api.random((data) => setWords(data))
+    // }, [words])
 
     return (
         <main className="mlb-l">
-            <article className="center stack">
-                <h1 className="text-3">Wordle Clone!</h1>
+            <article className="center stack board">
+                {words.map((word, wordIndex) => (
+                    <section key={wordIndex} className="word">
+                        {word.map((letter, letterIndex) => {
+                            return (
+                                <article
+                                    key={letterIndex}
+                                    className={`letter` + " " + ``}
+                                >
+                                    {letter}
+                                </article>
+                            );
+                        })}
+                    </section>
+                ))}
             </article>
         </main>
     );

@@ -1,0 +1,31 @@
+.board {
+    padding: 64px;
+    display: grid;
+    place-content: center;
+    gap: 12px;
+}
+
+.word {
+    display: flex;
+    gap: 12px;
+}
+
+.letter {
+    width: 64px;
+    height: 64px;
+    border: 1px solid gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 32px;
+    text-transform: uppercase;
+}
+
+.present {
+    background-color: #b59f3b;
+}
+
+.correct {
+    background-color: #538d4e;
+}
