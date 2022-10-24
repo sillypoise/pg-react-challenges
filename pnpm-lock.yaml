@@ -33,6 +33,12 @@ importers:
       vite: 3.1.8
       zod: 3.19.1
 
+  project/pokemon:
+    specifiers:
+      nes.css: ^2.3.0
+    dependencies:
+      nes.css: 2.3.0
+
 packages:
 
   /@ampproject/remapping/2.2.0:
@@ -1658,6 +1664,11 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
     dev: true
+
+  /nes.css/2.3.0:
+    resolution: {integrity: sha512-lCFZs9vj3f5RVdbvTL/kSxiYsOARwSeAdJaMNo+bCgmWOO9x8ay7QpT4yQVKHy3r5Dttzd0uqVdpt3fvvx6EpQ==}
+    engines: {node: 10.x}
+    dev: false
 
   /nice-try/1.0.5:
     resolution: {integrity: sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==}

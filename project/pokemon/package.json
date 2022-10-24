@@ -10,6 +10,7 @@
         "preview": "vite preview",
         "generate:css": "tailwindcss -i ../../sp-styles/tailwind.css -o ./styles/tailwind.css"
     },
-    "dependencies": {},
-    "devDependencies": {}
+    "dependencies": {
+        "nes.css": "^2.3.0"
+    }
 }
